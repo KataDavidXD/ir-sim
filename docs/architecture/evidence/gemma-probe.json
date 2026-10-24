@@ -1,0 +1,210 @@
+{
+  "date": "2026-10-24",
+  "base_url": "http://127.0.0.1:8000/v1",
+  "served_model": "gemma-4-e2b-it",
+  "snapshot_sha256": "044f153ec770f6797534196519f04aab0f6d3facf471a0f205c1c9329bfd8787",
+  "real_snapshot_summary": {
+    "session_id": "architecture-review",
+    "frame_id": 45,
+    "sim_time": 4.5,
+    "robot_count": 4,
+    "object_count": 104,
+    "lidar_minima": [
+      {
+        "name": "robot_0",
+        "min_range_m": 1.05
+      },
+      {
+        "name": "robot_1",
+        "min_range_m": 0.1
+      },
+      {
+        "name": "robot_2",
+        "min_range_m": 1.05
+      },
+      {
+        "name": "robot_3",
+        "min_range_m": 0.1
+      }
+    ]
+  },
+  "expected_grounded_answer": {
+    "frame_id": 45,
+    "robot_count": 4,
+    "closest_robot": "robot_1"
+  },
+  "scope": "HTTP model and tool capability smoke probes, not an MCP end-to-end test",
+  "cases": [
+    {
+      "name": "grounded_snapshot_reading",
+      "request": {
+        "model": "gemma-4-e2b-it",
+        "temperature": 0,
+        "max_tokens": 64,
+        "stream": false,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        },
+        "messages": [
+          {
+            "role": "user",
+            "content": "Read the actual simulation snapshot summary below as data. Return only a JSON object with frame_id (integer), robot_count (integer), and closest_robot (name of the robot with the smallest min_range_m). Do not invent data.\n{\"session_id\": \"architecture-review\", \"frame_id\": 45, \"sim_time\": 4.5, \"robot_count\": 4, \"object_count\": 104, \"lidar_minima\": [{\"name\": \"robot_0\", \"min_range_m\": 1.05}, {\"name\": \"robot_1\", \"min_range_m\": 0.1}, {\"name\": \"robot_2\", \"min_range_m\": 1.05}, {\"name\": \"robot_3\", \"min_range_m\": 0.1}]}"
+          }
+        ]
+      },
+      "http_status": 200,
+      "response": {
+        "id": "chatcmpl-805ac265da625d5b",
+        "object": "chat.completion",
+        "created": 1792846759,
+        "model": "gemma-4-e2b-it",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "```json\n{\n  \"frame_id\": 45,\n  \"robot_count\": 4,\n  \"closest_robot\": \"robot_1\"\n}\n```",
+              "refusal": null,
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "tool_calls": [],
+              "reasoning": null
+            },
+            "logprobs": null,
+            "finish_reason": "stop",
+            "stop_reason": 106,
+            "token_ids": null,
+            "routed_experts": null
+          }
+        ],
+        "service_tier": null,
+        "system_fingerprint": "vllm-0.22.1-72747fd4",
+        "usage": {
+          "prompt_tokens": 197,
+          "total_tokens": 239,
+          "completion_tokens": 42,
+          "prompt_tokens_details": null
+        },
+        "prompt_logprobs": null,
+        "prompt_token_ids": null,
+        "prompt_text": null,
+        "kv_transfer_params": null
+      },
+      "elapsed_s": 19.8968,
+      "parsed_answer": {
+        "frame_id": 45,
+        "robot_count": 4,
+        "closest_robot": "robot_1"
+      },
+      "matches_expected": true
+    },
+    {
+      "name": "automatic_tool_choice",
+      "request": {
+        "model": "gemma-4-e2b-it",
+        "temperature": 0,
+        "max_tokens": 64,
+        "stream": false,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        },
+        "messages": [
+          {
+            "role": "user",
+            "content": "Use get_simulation_summary to read the current frame of session architecture-review."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "get_simulation_summary",
+              "description": "Read a fixed, completed IR-SIM simulation frame. Read-only.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "session_id": {
+                    "type": "string",
+                    "enum": [
+                      "architecture-review"
+                    ]
+                  }
+                },
+                "required": [
+                  "session_id"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": "auto"
+      },
+      "http_status": 400,
+      "error": "{\"error\":{\"message\":\"\\\"auto\\\" tool choice requires --enable-auto-tool-choice and --tool-call-parser to be set\",\"type\":\"BadRequestError\",\"param\":null,\"code\":400}}",
+      "elapsed_s": 0.0049
+    },
+    {
+      "name": "named_tool_choice",
+      "request": {
+        "model": "gemma-4-e2b-it",
+        "temperature": 0,
+        "max_tokens": 64,
+        "stream": false,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        },
+        "messages": [
+          {
+            "role": "user",
+            "content": "Use get_simulation_summary to read the current frame of session architecture-review."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "get_simulation_summary",
+              "description": "Read a fixed, completed IR-SIM simulation frame. Read-only.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "session_id": {
+                    "type": "string",
+                    "enum": [
+                      "architecture-review"
+                    ]
+                  }
+                },
+                "required": [
+                  "session_id"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "get_simulation_summary"
+          }
+        }
+      },
+      "http_status": 400,
+      "error": "{\"error\":{\"message\":\"tool_choice=\\\"function=ChatCompletionNamedFunction(name='get_simulation_summary') type='function'\\\" requires --tool-call-parser to be set\",\"type\":\"BadRequestError\",\"param\":null,\"code\":400}}",
+      "elapsed_s": 0.0041
+    }
+  ],
+  "acceptable_closest_robots": [
+    "robot_1",
+    "robot_3"
+  ],
+  "limitations": [
+    "The two minimum-range robots are tied. The expected single-name fixture used the first one; either tied name is valid.",
+    "Only one successful grounded question was run. No reliability or latency distribution established.",
+    "Automatic and named tool calls were rejected by current vLLM parser configuration. No MCP end-to-end service was implemented.",
+    "Container was originally stopped, temporarily started using existing configuration, and restored to stopped afterward."
+  ]
+}

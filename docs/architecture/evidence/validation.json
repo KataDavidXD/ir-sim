@@ -1,0 +1,52 @@
+{
+  "baseline_commit": "39ed2f0e4ca006f5061d8808b19b46b2cfff2fca",
+  "date": "2026-10-24",
+  "scope": "Documentation and diagnostic evidence only. Production files unchanged. No implementation PR created.",
+  "core_tests": {
+    "command": ".venv/Scripts/python.exe -m pytest -q --no-cov tests/test_kinematics.py tests/test_env.py tests/test_objects.py tests/test_geometry.py tests/test_sensors.py tests/test_contact.py tests/test_sfm.py tests/test_rvo_vectorized.py tests/test_behaviors.py",
+    "exit_code": 0,
+    "passed": 733,
+    "skipped": 7,
+    "warnings": 24,
+    "elapsed_s": 79.32,
+    "test_files_run": 9,
+    "test_files_total": 16,
+    "note": "Not the full repository suite."
+  },
+  "lint": {
+    "command": ".venv/Scripts/ruff.exe check",
+    "exit_code": 0,
+    "result": "All checks passed!"
+  },
+  "format": {
+    "command": ".venv/Scripts/ruff.exe format --check",
+    "exit_code": 0,
+    "result": "187 files already formatted"
+  },
+  "documentation": {
+    "markdown_files": 5,
+    "links_checked": 63,
+    "local_links": "passed",
+    "markdown_parse": "passed",
+    "fences_and_source_references": "passed",
+    "json_strict_parse": "passed",
+    "diagnostic_python_text_ast": "passed",
+    "snapshot_sha256": "passed",
+    "scene_sha256": "passed",
+    "production_source_diff": "empty",
+    "sphinx_build": "not_run; design docs outside docs/source",
+    "note": "Profiler paths and diagnostic-text final newlines are normalized for sharing. No product source changes; no Sphinx build.",
+    "git_diff_cached_check": "passed"
+  },
+  "gemma": {
+    "model": "gemma-4-e2b-it",
+    "endpoint": "http://127.0.0.1:8000/v1",
+    "health_http_status": 200,
+    "models_http_status": 200,
+    "grounded_reading_passed": true,
+    "automatic_tool_choice_http_status": 400,
+    "named_tool_choice_http_status": 400,
+    "mcp_end_to_end_tested": false,
+    "container_final_state": "exited"
+  }
+}

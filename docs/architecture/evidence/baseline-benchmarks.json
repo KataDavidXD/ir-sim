@@ -1,0 +1,2135 @@
+{
+  "baseline_commit": "39ed2f0e4ca006f5061d8808b19b46b2cfff2fca",
+  "date": "2026-10-24",
+  "environment": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "python": "3.13.13 (main, May 10 2026, 19:31:06) [MSC v.1944 64 bit (AMD64)]",
+    "numpy": "2.3.2",
+    "shapely": "2.1.2",
+    "scipy": "1.16.1",
+    "matplotlib": "3.10.9",
+    "cpu": "AMD Ryzen 9 9955HX 16-Core Processor"
+  },
+  "method": {
+    "warmup": 5,
+    "samples": 25,
+    "phase_samples_separate": 10,
+    "profile_steps_separate": 5,
+    "snapshot_repeats": 7,
+    "headless": true,
+    "render": false,
+    "thread_limit": 1,
+    "notes": "Sequential single-process diagnostic. Phase/build_tree is nested; do not sum build_tree with _objects_step/_contact_step. Scenes use seed 42, no sensor noise; timing is illustrative, not ECS speedup.",
+    "concurrency_note": "Recorded after the 733-pass baseline test process completed and after the temporary Gemma service was stopped. Earlier exploratory run not used in this artifact. Desktop was not an isolated benchmark host.",
+    "path_normalization": "Profiler paths are normalized for sharing; elapsed times and samples are unchanged."
+  },
+  "scenarios": [
+    {
+      "name": "dash_100",
+      "robots": 100,
+      "objects": 100,
+      "sensors": 0,
+      "warmup_steps": 5,
+      "measured_steps": 25,
+      "seed": 42,
+      "scene_sha256": "4c523917074dda1a897f05221ab29f72aa38ba1076c63fb8d75cb42a1ada66cd",
+      "step_ms": {
+        "median": 3.924,
+        "p95": 4.31898,
+        "min": 3.7196,
+        "max": 4.6476,
+        "raw": [
+          3.9804,
+          3.8826,
+          4.3486,
+          3.9677,
+          3.8394,
+          4.6476,
+          4.0872,
+          3.8822,
+          3.8586,
+          3.9072,
+          3.7251,
+          3.7196,
+          3.7617,
+          3.8173,
+          3.7663,
+          3.8281,
+          3.9338,
+          4.1619,
+          3.9143,
+          3.9425,
+          3.924,
+          4.2005,
+          3.9829,
+          3.9423,
+          3.9808
+        ]
+      },
+      "phase_mean_ms_instrumented_separate_run": {
+        "_assign_group_action": 0.01051,
+        "build_tree": 0.03434,
+        "_objects_step": 3.58027,
+        "_objects_sensor_step": 0.00862,
+        "_status_step": 0.34229
+      },
+      "snapshot_median_ms": 0.735,
+      "snapshot_to_dict_median_ms": 1.9383,
+      "dict_to_json_median_ms": 0.8873,
+      "snapshot_json_bytes": 96897,
+      "profile_5_steps_top_by_cumulative": [
+        {
+          "file": "./irsim/util/decorator.py",
+          "line": 93,
+          "function": "wrapper",
+          "calls": 5,
+          "self_ms": 0.015,
+          "cumulative_ms": 46.976
+        },
+        {
+          "file": "./irsim/util/decorator.py",
+          "line": 132,
+          "function": "wrapper",
+          "calls": 5,
+          "self_ms": 0.018,
+          "cumulative_ms": 46.937
+        },
+        {
+          "file": "./irsim/env/env_base.py",
+          "line": 335,
+          "function": "step",
+          "calls": 5,
+          "self_ms": 0.043,
+          "cumulative_ms": 46.913
+        },
+        {
+          "file": "./irsim/env/env_base.py",
+          "line": 427,
+          "function": "_objects_step",
+          "calls": 5,
+          "self_ms": 0.146,
+          "cumulative_ms": 42.341
+        },
+        {
+          "file": "./irsim/world/object_base.py",
+          "line": 666,
+          "function": "step",
+          "calls": 500,
+          "self_ms": 1.896,
+          "cumulative_ms": 41.881
+        },
+        {
+          "file": "./irsim/world/object_base.py",
+          "line": 908,
+          "function": "gen_behavior_vel",
+          "calls": 500,
+          "self_ms": 2.271,
+          "cumulative_ms": 24.16
+        },
+        {
+          "file": "./irsim/world/object_base.py",
+          "line": 2273,
+          "function": "external_objects",
+          "calls": 500,
+          "self_ms": 8.289,
+          "cumulative_ms": 12.981
+        },
+        {
+          "file": "./irsim/lib/handler/geometry_handler.py",
+          "line": 54,
+          "function": "step",
+          "calls": 500,
+          "self_ms": 0.214,
+          "cumulative_ms": 9.338
+        },
+        {
+          "file": "./irsim/util/util.py",
+          "line": 436,
+          "function": "geometry_transform",
+          "calls": 500,
+          "self_ms": 1.433,
+          "cumulative_ms": 9.124
+        },
+        {
+          "file": "./.venv/Lib/site-packages/shapely/decorators.py",
+          "line": 171,
+          "function": "wrapper",
+          "calls": 500,
+          "self_ms": 0.304,
+          "cumulative_ms": 6.865
+        },
+        {
+          "file": "./irsim/lib/behavior/behavior.py",
+          "line": 40,
+          "function": "gen_vel",
+          "calls": 500,
+          "self_ms": 0.511,
+          "cumulative_ms": 6.718
+        },
+        {
+          "file": "./.venv/Lib/site-packages/shapely/coordinates.py",
+          "line": 21,
+          "function": "transform",
+          "calls": 500,
+          "self_ms": 0.815,
+          "cumulative_ms": 6.52
+        },
+        {
+          "file": "./irsim/lib/behavior/behavior.py",
+          "line": 136,
+          "function": "invoke_behavior",
+          "calls": 500,
+          "self_ms": 0.33,
+          "cumulative_ms": 6.083
+        },
+        {
+          "file": "./irsim/lib/behavior/behavior_methods.py",
+          "line": 138,
+          "function": "beh_diff_dash",
+          "calls": 500,
+          "self_ms": 1.036,
+          "cumulative_ms": 5.68
+        },
+        {
+          "file": "./irsim/world/object_base.py",
+          "line": 1935,
+          "function": "id",
+          "calls": 101000,
+          "self_ms": 4.707,
+          "cumulative_ms": 4.707
+        },
+        {
+          "file": "./irsim/env/env_base.py",
+          "line": 914,
+          "function": "_status_step",
+          "calls": 5,
+          "self_ms": 0.353,
+          "cumulative_ms": 4.223
+        },
+        {
+          "file": "./irsim/util/util.py",
+          "line": 454,
+          "function": "rotate_translate",
+          "calls": 500,
+          "self_ms": 2.228,
+          "cumulative_ms": 3.961
+        },
+        {
+          "file": "./irsim/lib/handler/kinematics_handler.py",
+          "line": 465,
+          "function": "step",
+          "calls": 500,
+          "self_ms": 0.17,
+          "cumulative_ms": 3.811
+        },
+        {
+          "file": "./irsim/util/util.py",
+          "line": 800,
+          "function": "wrapper",
+          "calls": 500,
+          "self_ms": 0.753,
+          "cumulative_ms": 3.641
+        },
+        {
+          "file": "./irsim/world/object_base.py",
+          "line": 774,
+          "function": "check_status",
+          "calls": 500,
+          "self_ms": 0.381,
+          "cumulative_ms": 3.139
+        },
+        {
+          "file": "./irsim/lib/behavior/behavior_methods.py",
+          "line": 704,
+          "function": "DiffDash",
+          "calls": 500,
+          "self_ms": 0.841,
+          "cumulative_ms": 2.799
+        },
+        {
+          "file": "./irsim/lib/algorithm/kinematics.py",
+          "line": 49,
+          "function": "differential_kinematics",
+          "calls": 500,
+          "self_ms": 1.581,
+          "cumulative_ms": 2.539
+        }
+      ]
+    },
+    {
+      "name": "dash_500",
+      "robots": 500,
+      "objects": 500,
+      "sensors": 0,
+      "warmup_steps": 5,
+      "measured_steps": 25,
+      "seed": 42,
+      "scene_sha256": "551945dab88beca1531196887cf8c4ec6010d469d4332fadbb773fb78c93a957",
+      "step_ms": {
+        "median": 33.8571,
+        "p95": 36.25198,
+        "min": 30.6341,
+        "max": 37.0357,
+        "raw": [
+          35.0972,
+          35.6795,
+          35.222,
+          35.6963,
+          35.6316,
+          37.0357,
+          35.5705,
+          36.3909,
+          33.6543,
+          33.8571,
+          34.8077,
+          35.532,
+          32.0378,
+          31.4842,
+          30.8104,
+          30.7727,
+          30.6341,
+          31.7219,
+          32.225,
+          31.5572,
+          31.3989,
+          32.4203,
+          32.6692,
+          34.07,
+          33.9859
+        ]
+      },
+      "phase_mean_ms_instrumented_separate_run": {
+        "_assign_group_action": 0.06458,
+        "build_tree": 0.49273,
+        "_objects_step": 48.15818,
+        "_objects_sensor_step": 0.14191,
+        "_status_step": 3.16064
+      },
+      "snapshot_median_ms": 7.033,
+      "snapshot_to_dict_median_ms": 16.0956,
+      "dict_to_json_median_ms": 6.6638,
+      "snapshot_json_bytes": 485622,
+      "profile_5_steps_top_by_cumulative": [
+        {
+          "file": "./irsim/util/decorator.py",
+          "line": 93,
+          "function": "wrapper",
+          "calls": 5,
+          "self_ms": 0.03,
+          "cumulative_ms": 694.286
+        },
+        {
+          "file": "./irsim/util/decorator.py",
+          "line": 132,
+          "function": "wrapper",
+          "calls": 5,
+          "self_ms": 0.026,
+          "cumulative_ms": 694.204
+        },
+        {
+          "file": "./irsim/env/env_base.py",
+          "line": 335,
+          "function": "step",
+          "calls": 5,
+          "self_ms": 0.158,
+          "cumulative_ms": 694.168
+        },
+        {
+          "file": "./irsim/env/env_base.py",
+          "line": 427,
+          "function": "_objects_step",
+          "calls": 5,
+          "self_ms": 1.346,
+          "cumulative_ms": 663.011
+        },
+        {
+          "file": "./irsim/world/object_base.py",
+          "line": 666,
+          "function": "step",
+          "calls": 2500,
+          "self_ms": 14.894,
+          "cumulative_ms": 658.491
+        },
+        {
+          "file": "./irsim/world/object_base.py",
+          "line": 908,
+          "function": "gen_behavior_vel",
+          "calls": 2500,
+          "self_ms": 20.123,
+          "cumulative_ms": 506.548
+        },
+        {
+          "file": "./irsim/world/object_base.py",
+          "line": 2273,
+          "function": "external_objects",
+          "calls": 2500,
+          "self_ms": 233.173,
+          "cumulative_ms": 400.131
+        },
+        {
+          "file": "./irsim/world/object_base.py",
+          "line": 1935,
+          "function": "id",
+          "calls": 2505000,
+          "self_ms": 167.029,
+          "cumulative_ms": 167.029
+        },
+        {
+          "file": "./irsim/lib/handler/geometry_handler.py",
+          "line": 54,
+          "function": "step",
+          "calls": 2500,
+          "self_ms": 2.239,
+          "cumulative_ms": 80.951
+        },
+        {
+          "file": "./irsim/util/util.py",
+          "line": 436,
+          "function": "geometry_transform",
+          "calls": 2500,
+          "self_ms": 11.711,
+          "cumulative_ms": 78.712
+        },
+        {
+          "file": "./irsim/lib/behavior/behavior.py",
+          "line": 40,
+          "function": "gen_vel",
+          "calls": 2500,
+          "self_ms": 6.1,
+          "cumulative_ms": 67.333
+        },
+        {
+          "file": "./irsim/lib/behavior/behavior.py",
+          "line": 136,
+          "function": "invoke_behavior",
+          "calls": 2500,
+          "self_ms": 2.964,
+          "cumulative_ms": 60.148
+        },
+        {
+          "file": "./.venv/Lib/site-packages/shapely/decorators.py",
+          "line": 171,
+          "function": "wrapper",
+          "calls": 2500,
+          "self_ms": 2.374,
+          "cumulative_ms": 59.041
+        },
+        {
+          "file": "./irsim/lib/behavior/behavior_methods.py",
+          "line": 138,
+          "function": "beh_diff_dash",
+          "calls": 2500,
+          "self_ms": 9.013,
+          "cumulative_ms": 56.434
+        },
+        {
+          "file": "./.venv/Lib/site-packages/shapely/coordinates.py",
+          "line": 21,
+          "function": "transform",
+          "calls": 2500,
+          "self_ms": 6.044,
+          "cumulative_ms": 56.367
+        },
+        {
+          "file": "./irsim/lib/handler/kinematics_handler.py",
+          "line": 465,
+          "function": "step",
+          "calls": 2500,
+          "self_ms": 1.395,
+          "cumulative_ms": 32.963
+        },
+        {
+          "file": "./irsim/util/util.py",
+          "line": 454,
+          "function": "rotate_translate",
+          "calls": 2500,
+          "self_ms": 16.592,
+          "cumulative_ms": 31.626
+        },
+        {
+          "file": "./irsim/util/util.py",
+          "line": 800,
+          "function": "wrapper",
+          "calls": 2500,
+          "self_ms": 5.97,
+          "cumulative_ms": 31.568
+        },
+        {
+          "file": "./irsim/env/env_base.py",
+          "line": 914,
+          "function": "_status_step",
+          "calls": 5,
+          "self_ms": 2.317,
+          "cumulative_ms": 28.881
+        },
+        {
+          "file": "./irsim/lib/behavior/behavior_methods.py",
+          "line": 704,
+          "function": "DiffDash",
+          "calls": 2500,
+          "self_ms": 6.936,
+          "cumulative_ms": 27.662
+        },
+        {
+          "file": "./.venv/Lib/site-packages/numpy/_core/fromnumeric.py",
+          "line": 2241,
+          "function": "clip",
+          "calls": 5000,
+          "self_ms": 4.174,
+          "cumulative_ms": 23.514
+        },
+        {
+          "file": "./irsim/lib/algorithm/kinematics.py",
+          "line": 49,
+          "function": "differential_kinematics",
+          "calls": 2500,
+          "self_ms": 14.951,
+          "cumulative_ms": 22.921
+        }
+      ]
+    },
+    {
+      "name": "dash_1000",
+      "robots": 1000,
+      "objects": 1000,
+      "sensors": 0,
+      "warmup_steps": 5,
+      "measured_steps": 25,
+      "seed": 42,
+      "scene_sha256": "6b44b918d70a3a31e1a788c5813a47994fc81dd19c2c986cde073f3cf43b95b2",
+      "step_ms": {
+        "median": 163.7489,
+        "p95": 177.90712,
+        "min": 135.3582,
+        "max": 181.3557,
+        "raw": [
+          140.4207,
+          158.0669,
+          140.4613,
+          135.3582,
+          137.9132,
+          148.0202,
+          150.9287,
+          169.377,
+          167.8096,
+          166.7075,
+          177.2446,
+          172.6198,
+          160.7432,
+          163.7489,
+          177.9503,
+          177.7344,
+          172.9327,
+          175.8747,
+          169.8746,
+          175.0093,
+          181.3557,
+          162.6125,
+          161.0829,
+          163.1951,
+          162.4491
+        ]
+      },
+      "phase_mean_ms_instrumented_separate_run": {
+        "_assign_group_action": 0.1408,
+        "build_tree": 1.09039,
+        "_objects_step": 170.27627999999999,
+        "_objects_sensor_step": 0.37839,
+        "_status_step": 6.7368500000000004
+      },
+      "snapshot_median_ms": 15.799,
+      "snapshot_to_dict_median_ms": 32.3336,
+      "dict_to_json_median_ms": 15.1905,
+      "snapshot_json_bytes": 972773,
+      "profile_5_steps_top_by_cumulative": [
+        {
+          "file": "./irsim/util/decorator.py",
+          "line": 93,
+          "function": "wrapper",
+          "calls": 5,
+          "self_ms": 0.038,
+          "cumulative_ms": 2714.161
+        },
+        {
+          "file": "./irsim/util/decorator.py",
+          "line": 132,
+          "function": "wrapper",
+          "calls": 5,
+          "self_ms": 0.035,
+          "cumulative_ms": 2714.065
+        },
+        {
+          "file": "./irsim/env/env_base.py",
+          "line": 335,
+          "function": "step",
+          "calls": 5,
+          "self_ms": 0.417,
+          "cumulative_ms": 2714.015
+        },
+        {
+          "file": "./irsim/env/env_base.py",
+          "line": 427,
+          "function": "_objects_step",
+          "calls": 5,
+          "self_ms": 3.753,
+          "cumulative_ms": 2647.132
+        },
+        {
+          "file": "./irsim/world/object_base.py",
+          "line": 666,
+          "function": "step",
+          "calls": 5000,
+          "self_ms": 37.434,
+          "cumulative_ms": 2637.053
+        },
+        {
+          "file": "./irsim/world/object_base.py",
+          "line": 908,
+          "function": "gen_behavior_vel",
+          "calls": 5000,
+          "self_ms": 59.4,
+          "cumulative_ms": 2234.139
+        },
+        {
+          "file": "./irsim/world/object_base.py",
+          "line": 2273,
+          "function": "external_objects",
+          "calls": 5000,
+          "self_ms": 1084.137,
+          "cumulative_ms": 1928.293
+        },
+        {
+          "file": "./irsim/world/object_base.py",
+          "line": 1935,
+          "function": "id",
+          "calls": 10010000,
+          "self_ms": 844.297,
+          "cumulative_ms": 844.297
+        },
+        {
+          "file": "./irsim/lib/handler/geometry_handler.py",
+          "line": 54,
+          "function": "step",
+          "calls": 5000,
+          "self_ms": 5.814,
+          "cumulative_ms": 216.558
+        },
+        {
+          "file": "./irsim/util/util.py",
+          "line": 436,
+          "function": "geometry_transform",
+          "calls": 5000,
+          "self_ms": 31.561,
+          "cumulative_ms": 210.744
+        },
+        {
+          "file": "./irsim/lib/behavior/behavior.py",
+          "line": 40,
+          "function": "gen_vel",
+          "calls": 5000,
+          "self_ms": 18.445,
+          "cumulative_ms": 196.521
+        },
+        {
+          "file": "./irsim/lib/behavior/behavior.py",
+          "line": 136,
+          "function": "invoke_behavior",
+          "calls": 5000,
+          "self_ms": 8.503,
+          "cumulative_ms": 174.507
+        },
+        {
+          "file": "./irsim/lib/behavior/behavior_methods.py",
+          "line": 138,
+          "function": "beh_diff_dash",
+          "calls": 5000,
+          "self_ms": 25.346,
+          "cumulative_ms": 163.697
+        },
+        {
+          "file": "./.venv/Lib/site-packages/shapely/decorators.py",
+          "line": 171,
+          "function": "wrapper",
+          "calls": 5000,
+          "self_ms": 6.381,
+          "cumulative_ms": 156.997
+        },
+        {
+          "file": "./.venv/Lib/site-packages/shapely/coordinates.py",
+          "line": 21,
+          "function": "transform",
+          "calls": 5000,
+          "self_ms": 15.484,
+          "cumulative_ms": 149.881
+        },
+        {
+          "file": "./irsim/lib/handler/kinematics_handler.py",
+          "line": 465,
+          "function": "step",
+          "calls": 5000,
+          "self_ms": 3.589,
+          "cumulative_ms": 87.756
+        },
+        {
+          "file": "./irsim/util/util.py",
+          "line": 800,
+          "function": "wrapper",
+          "calls": 5000,
+          "self_ms": 15.374,
+          "cumulative_ms": 84.166
+        },
+        {
+          "file": "./irsim/util/util.py",
+          "line": 454,
+          "function": "rotate_translate",
+          "calls": 5000,
+          "self_ms": 41.435,
+          "cumulative_ms": 81.541
+        },
+        {
+          "file": "./irsim/lib/behavior/behavior_methods.py",
+          "line": 704,
+          "function": "DiffDash",
+          "calls": 5000,
+          "self_ms": 18.684,
+          "cumulative_ms": 81.493
+        },
+        {
+          "file": "./.venv/Lib/site-packages/numpy/_core/fromnumeric.py",
+          "line": 2241,
+          "function": "clip",
+          "calls": 10000,
+          "self_ms": 10.656,
+          "cumulative_ms": 65.639
+        },
+        {
+          "file": "./irsim/env/env_base.py",
+          "line": 914,
+          "function": "_status_step",
+          "calls": 5,
+          "self_ms": 5.391,
+          "cumulative_ms": 62.121
+        },
+        {
+          "file": "./irsim/lib/algorithm/kinematics.py",
+          "line": 49,
+          "function": "differential_kinematics",
+          "calls": 5000,
+          "self_ms": 40.927,
+          "cumulative_ms": 61.938
+        }
+      ]
+    },
+    {
+      "name": "prescribed_1000",
+      "robots": 1000,
+      "objects": 1000,
+      "sensors": 0,
+      "warmup_steps": 5,
+      "measured_steps": 25,
+      "seed": 42,
+      "scene_sha256": "f9706daaeec5a5dd2de02071d2730254e4e5b0b1ace039bf49f9929e5df95cdf",
+      "step_ms": {
+        "median": 64.3678,
+        "p95": 80.19373999999999,
+        "min": 61.4643,
+        "max": 83.0989,
+        "raw": [
+          77.3927,
+          73.0241,
+          74.1704,
+          72.1708,
+          64.3978,
+          64.3678,
+          63.184,
+          62.6822,
+          61.4643,
+          63.2547,
+          63.9394,
+          65.662,
+          64.1814,
+          63.7501,
+          64.1224,
+          66.6507,
+          63.4704,
+          63.8382,
+          63.5811,
+          63.4241,
+          70.9683,
+          83.0989,
+          80.894,
+          64.8139,
+          76.0788
+        ]
+      },
+      "phase_mean_ms_instrumented_separate_run": {
+        "_assign_group_action": 0.1199,
+        "build_tree": 0.95951,
+        "_objects_step": 33.36216,
+        "_objects_sensor_step": 0.3043,
+        "_status_step": 5.19954
+      },
+      "snapshot_median_ms": 14.0825,
+      "snapshot_to_dict_median_ms": 26.5046,
+      "dict_to_json_median_ms": 11.5809,
+      "snapshot_json_bytes": 971988,
+      "profile_5_steps_top_by_cumulative": [
+        {
+          "file": "<diagnostic>/baseline-harness.py",
+          "line": 64,
+          "function": "<lambda>",
+          "calls": 5,
+          "self_ms": 0.404,
+          "cumulative_ms": 698.703
+        },
+        {
+          "file": "./irsim/util/decorator.py",
+          "line": 93,
+          "function": "wrapper",
+          "calls": 5,
+          "self_ms": 0.082,
+          "cumulative_ms": 697.871
+        },
+        {
+          "file": "./irsim/util/decorator.py",
+          "line": 132,
+          "function": "wrapper",
+          "calls": 5,
+          "self_ms": 0.251,
+          "cumulative_ms": 697.743
+        },
+        {
+          "file": "./irsim/util/decorator.py",
+          "line": 62,
+          "function": "_target_positions",
+          "calls": 5,
+          "self_ms": 1.027,
+          "cumulative_ms": 376.056
+        },
+        {
+          "file": "./irsim/util/decorator.py",
+          "line": 70,
+          "function": "position",
+          "calls": 5000,
+          "self_ms": 2.697,
+          "cumulative_ms": 375.029
+        },
+        {
+          "file": "./irsim/util/util.py",
+          "line": 321,
+          "function": "find_object_by_identity",
+          "calls": 5000,
+          "self_ms": 237.032,
+          "cumulative_ms": 360.028
+        },
+        {
+          "file": "./irsim/env/env_base.py",
+          "line": 335,
+          "function": "step",
+          "calls": 5,
+          "self_ms": 0.294,
+          "cumulative_ms": 321.351
+        },
+        {
+          "file": "./irsim/env/env_base.py",
+          "line": 427,
+          "function": "_objects_step",
+          "calls": 5,
+          "self_ms": 3.044,
+          "cumulative_ms": 270.907
+        },
+        {
+          "file": "./irsim/world/object_base.py",
+          "line": 666,
+          "function": "step",
+          "calls": 5000,
+          "self_ms": 22.591,
+          "cumulative_ms": 261.977
+        },
+        {
+          "file": "./irsim/world/object_base.py",
+          "line": 1935,
+          "function": "id",
+          "calls": 2517500,
+          "self_ms": 124.514,
+          "cumulative_ms": 124.514
+        },
+        {
+          "file": "./irsim/lib/handler/geometry_handler.py",
+          "line": 54,
+          "function": "step",
+          "calls": 5000,
+          "self_ms": 2.957,
+          "cumulative_ms": 105.665
+        },
+        {
+          "file": "./irsim/util/util.py",
+          "line": 436,
+          "function": "geometry_transform",
+          "calls": 5000,
+          "self_ms": 15.747,
+          "cumulative_ms": 102.709
+        },
+        {
+          "file": "./.venv/Lib/site-packages/shapely/decorators.py",
+          "line": 171,
+          "function": "wrapper",
+          "calls": 5000,
+          "self_ms": 3.356,
+          "cumulative_ms": 77.563
+        },
+        {
+          "file": "./.venv/Lib/site-packages/shapely/coordinates.py",
+          "line": 21,
+          "function": "transform",
+          "calls": 5000,
+          "self_ms": 8.28,
+          "cumulative_ms": 73.764
+        },
+        {
+          "file": "./irsim/world/object_base.py",
+          "line": 908,
+          "function": "gen_behavior_vel",
+          "calls": 5000,
+          "self_ms": 25.582,
+          "cumulative_ms": 58.406
+        },
+        {
+          "file": "./irsim/env/env_base.py",
+          "line": 914,
+          "function": "_status_step",
+          "calls": 5,
+          "self_ms": 3.931,
+          "cumulative_ms": 46.492
+        },
+        {
+          "file": "./irsim/lib/handler/kinematics_handler.py",
+          "line": 465,
+          "function": "step",
+          "calls": 5000,
+          "self_ms": 1.923,
+          "cumulative_ms": 43.424
+        },
+        {
+          "file": "./irsim/util/util.py",
+          "line": 454,
+          "function": "rotate_translate",
+          "calls": 5000,
+          "self_ms": 24.494,
+          "cumulative_ms": 43.197
+        },
+        {
+          "file": "./irsim/util/util.py",
+          "line": 800,
+          "function": "wrapper",
+          "calls": 5000,
+          "self_ms": 7.911,
+          "cumulative_ms": 41.501
+        },
+        {
+          "file": "./irsim/world/object_base.py",
+          "line": 774,
+          "function": "check_status",
+          "calls": 5000,
+          "self_ms": 3.898,
+          "cumulative_ms": 34.885
+        },
+        {
+          "file": "./irsim/lib/algorithm/kinematics.py",
+          "line": 49,
+          "function": "differential_kinematics",
+          "calls": 5000,
+          "self_ms": 18.058,
+          "cumulative_ms": 29.554
+        },
+        {
+          "file": "./irsim/world/object_base.py",
+          "line": 811,
+          "function": "check_arrive_status",
+          "calls": 5000,
+          "self_ms": 2.133,
+          "cumulative_ms": 28.109
+        }
+      ]
+    },
+    {
+      "name": "sfm_individual_200",
+      "robots": 200,
+      "objects": 200,
+      "sensors": 0,
+      "warmup_steps": 5,
+      "measured_steps": 25,
+      "seed": 42,
+      "scene_sha256": "1c902c8599d7894a9485d3241a116daf030a3440de0ec22f5db0879d8deee70f",
+      "step_ms": {
+        "median": 102.5738,
+        "p95": 122.7523,
+        "min": 87.6606,
+        "max": 125.0297,
+        "raw": [
+          102.5738,
+          109.5345,
+          107.031,
+          87.6606,
+          90.9968,
+          89.9721,
+          91.1802,
+          114.3791,
+          103.9785,
+          93.76,
+          104.45,
+          116.0551,
+          118.4407,
+          94.3361,
+          94.4805,
+          94.0932,
+          101.7811,
+          94.9127,
+          94.6029,
+          88.1631,
+          106.4559,
+          121.3687,
+          125.0297,
+          123.0982,
+          111.2578
+        ]
+      },
+      "phase_mean_ms_instrumented_separate_run": {
+        "_assign_group_action": 0.03161,
+        "build_tree": 0.20983,
+        "_objects_step": 97.9807,
+        "_objects_sensor_step": 0.04978,
+        "_status_step": 1.09826
+      },
+      "snapshot_median_ms": 1.9043,
+      "snapshot_to_dict_median_ms": 4.8582,
+      "dict_to_json_median_ms": 2.196,
+      "snapshot_json_bytes": 200858,
+      "profile_5_steps_top_by_cumulative": [
+        {
+          "file": "./irsim/util/decorator.py",
+          "line": 93,
+          "function": "wrapper",
+          "calls": 5,
+          "self_ms": 0.022,
+          "cumulative_ms": 1000.547
+        },
+        {
+          "file": "./irsim/util/decorator.py",
+          "line": 132,
+          "function": "wrapper",
+          "calls": 5,
+          "self_ms": 0.021,
+          "cumulative_ms": 1000.479
+        },
+        {
+          "file": "./irsim/env/env_base.py",
+          "line": 335,
+          "function": "step",
+          "calls": 5,
+          "self_ms": 0.086,
+          "cumulative_ms": 1000.451
+        },
+        {
+          "file": "./irsim/env/env_base.py",
+          "line": 427,
+          "function": "_objects_step",
+          "calls": 5,
+          "self_ms": 0.675,
+          "cumulative_ms": 990.123
+        },
+        {
+          "file": "./irsim/world/object_base.py",
+          "line": 666,
+          "function": "step",
+          "calls": 1000,
+          "self_ms": 6.839,
+          "cumulative_ms": 988.338
+        },
+        {
+          "file": "./irsim/world/object_base.py",
+          "line": 908,
+          "function": "gen_behavior_vel",
+          "calls": 1000,
+          "self_ms": 20.784,
+          "cumulative_ms": 919.754
+        },
+        {
+          "file": "./irsim/lib/behavior/behavior.py",
+          "line": 40,
+          "function": "gen_vel",
+          "calls": 1000,
+          "self_ms": 2.699,
+          "cumulative_ms": 643.053
+        },
+        {
+          "file": "./irsim/lib/behavior/behavior.py",
+          "line": 136,
+          "function": "invoke_behavior",
+          "calls": 1000,
+          "self_ms": 1.734,
+          "cumulative_ms": 639.917
+        },
+        {
+          "file": "./irsim/lib/behavior/behavior_methods.py",
+          "line": 250,
+          "function": "beh_diff_sfm",
+          "calls": 1000,
+          "self_ms": 66.137,
+          "cumulative_ms": 637.88
+        },
+        {
+          "file": "./irsim/lib/behavior/behavior_methods.py",
+          "line": 400,
+          "function": "SFMVelocity",
+          "calls": 1000,
+          "self_ms": 66.17,
+          "cumulative_ms": 392.743
+        },
+        {
+          "file": "./irsim/lib/algorithm/social_force_model.py",
+          "line": 151,
+          "function": "cal_vel",
+          "calls": 1000,
+          "self_ms": 2.415,
+          "cumulative_ms": 326.162
+        },
+        {
+          "file": "./irsim/lib/algorithm/social_force_model.py",
+          "line": 202,
+          "function": "social_force",
+          "calls": 1000,
+          "self_ms": 256.124,
+          "cumulative_ms": 322.9
+        },
+        {
+          "file": "./.venv/Lib/site-packages/numpy/_core/arrayprint.py",
+          "line": 1704,
+          "function": "_array_str_implementation",
+          "calls": 3000,
+          "self_ms": 3.038,
+          "cumulative_ms": 163.963
+        },
+        {
+          "file": "./.venv/Lib/site-packages/numpy/_core/arrayprint.py",
+          "line": 619,
+          "function": "array2string",
+          "calls": 3000,
+          "self_ms": 6.176,
+          "cumulative_ms": 160.546
+        },
+        {
+          "file": "./.venv/Lib/site-packages/numpy/_core/arrayprint.py",
+          "line": 564,
+          "function": "wrapper",
+          "calls": 3000,
+          "self_ms": 4.882,
+          "cumulative_ms": 142.199
+        },
+        {
+          "file": "./.venv/Lib/site-packages/numpy/_core/arrayprint.py",
+          "line": 581,
+          "function": "_array2string",
+          "calls": 3000,
+          "self_ms": 7.893,
+          "cumulative_ms": 135.093
+        },
+        {
+          "file": "./.venv/Lib/site-packages/numpy/_core/arrayprint.py",
+          "line": 510,
+          "function": "_get_format_function",
+          "calls": 3000,
+          "self_ms": 6.827,
+          "cumulative_ms": 86.307
+        },
+        {
+          "file": "./irsim/world/object_base.py",
+          "line": 2345,
+          "function": "rvo_neighbor_state",
+          "calls": 199000,
+          "self_ms": 28.476,
+          "cumulative_ms": 72.318
+        },
+        {
+          "file": "./.venv/Lib/site-packages/numpy/_core/arrayprint.py",
+          "line": 469,
+          "function": "<lambda>",
+          "calls": 2000,
+          "self_ms": 1.851,
+          "cumulative_ms": 64.442
+        },
+        {
+          "file": "./.venv/Lib/site-packages/numpy/_core/arrayprint.py",
+          "line": 975,
+          "function": "__init__",
+          "calls": 2000,
+          "self_ms": 2.878,
+          "cumulative_ms": 62.591
+        },
+        {
+          "file": "./irsim/world/object_base.py",
+          "line": 2273,
+          "function": "external_objects",
+          "calls": 1000,
+          "self_ms": 36.683,
+          "cumulative_ms": 62.265
+        },
+        {
+          "file": "./.venv/Lib/site-packages/numpy/_core/arrayprint.py",
+          "line": 1001,
+          "function": "fillFormat",
+          "calls": 2000,
+          "self_ms": 24.576,
+          "cumulative_ms": 59.026
+        }
+      ]
+    },
+    {
+      "name": "sfm_group_200",
+      "robots": 200,
+      "objects": 200,
+      "sensors": 0,
+      "warmup_steps": 5,
+      "measured_steps": 25,
+      "seed": 42,
+      "scene_sha256": "3c91cb17ec9a8a1b9825397e449812a39832a8bca3111b543d9e9aea2e5fa1ae",
+      "step_ms": {
+        "median": 14.3075,
+        "p95": 17.31864,
+        "min": 11.7948,
+        "max": 18.0653,
+        "raw": [
+          12.848,
+          12.5821,
+          12.0255,
+          12.0665,
+          12.5464,
+          13.67,
+          12.3126,
+          12.633,
+          15.1448,
+          13.4757,
+          11.7948,
+          18.0653,
+          16.7448,
+          15.9494,
+          17.4621,
+          16.7369,
+          14.2238,
+          16.4465,
+          14.9014,
+          15.048,
+          15.5273,
+          14.7818,
+          14.3075,
+          14.2838,
+          15.5321
+        ]
+      },
+      "phase_mean_ms_instrumented_separate_run": {
+        "_assign_group_action": 7.00005,
+        "build_tree": 0.16741999999999999,
+        "_objects_step": 7.03771,
+        "_objects_sensor_step": 0.03921,
+        "_status_step": 0.9702999999999999
+      },
+      "snapshot_median_ms": 1.6189,
+      "snapshot_to_dict_median_ms": 4.0799,
+      "dict_to_json_median_ms": 1.9461,
+      "snapshot_json_bytes": 198265,
+      "profile_5_steps_top_by_cumulative": [
+        {
+          "file": "./irsim/util/decorator.py",
+          "line": 93,
+          "function": "wrapper",
+          "calls": 5,
+          "self_ms": 0.095,
+          "cumulative_ms": 115.6
+        },
+        {
+          "file": "./irsim/util/decorator.py",
+          "line": 132,
+          "function": "wrapper",
+          "calls": 5,
+          "self_ms": 0.021,
+          "cumulative_ms": 115.462
+        },
+        {
+          "file": "./irsim/env/env_base.py",
+          "line": 335,
+          "function": "step",
+          "calls": 5,
+          "self_ms": 0.098,
+          "cumulative_ms": 115.431
+        },
+        {
+          "file": "./irsim/env/env_base.py",
+          "line": 427,
+          "function": "_objects_step",
+          "calls": 5,
+          "self_ms": 0.487,
+          "cumulative_ms": 58.047
+        },
+        {
+          "file": "./irsim/world/object_base.py",
+          "line": 666,
+          "function": "step",
+          "calls": 1000,
+          "self_ms": 4.707,
+          "cumulative_ms": 56.586
+        },
+        {
+          "file": "./irsim/env/env_base.py",
+          "line": 662,
+          "function": "_assign_group_action",
+          "calls": 5,
+          "self_ms": 0.43,
+          "cumulative_ms": 45.407
+        },
+        {
+          "file": "./irsim/world/object_group.py",
+          "line": 67,
+          "function": "gen_group_vel",
+          "calls": 5,
+          "self_ms": 0.007,
+          "cumulative_ms": 44.635
+        },
+        {
+          "file": "./irsim/lib/behavior/group_behavior.py",
+          "line": 79,
+          "function": "gen_group_vel",
+          "calls": 5,
+          "self_ms": 0.029,
+          "cumulative_ms": 44.628
+        },
+        {
+          "file": "./irsim/lib/behavior/group_behavior_methods.py",
+          "line": 360,
+          "function": "__call__",
+          "calls": 5,
+          "self_ms": 0.407,
+          "cumulative_ms": 44.596
+        },
+        {
+          "file": "./irsim/lib/handler/geometry_handler.py",
+          "line": 54,
+          "function": "step",
+          "calls": 1000,
+          "self_ms": 0.616,
+          "cumulative_ms": 23.146
+        },
+        {
+          "file": "./irsim/util/util.py",
+          "line": 436,
+          "function": "geometry_transform",
+          "calls": 1000,
+          "self_ms": 3.524,
+          "cumulative_ms": 22.53
+        },
+        {
+          "file": "./irsim/lib/algorithm/social_force_model.py",
+          "line": 537,
+          "function": "cal_vel",
+          "calls": 5,
+          "self_ms": 2.252,
+          "cumulative_ms": 22.348
+        },
+        {
+          "file": "./irsim/lib/algorithm/social_force_model.py",
+          "line": 571,
+          "function": "social_force",
+          "calls": 5,
+          "self_ms": 19.656,
+          "cumulative_ms": 20.037
+        },
+        {
+          "file": "./.venv/Lib/site-packages/shapely/decorators.py",
+          "line": 171,
+          "function": "wrapper",
+          "calls": 1000,
+          "self_ms": 0.728,
+          "cumulative_ms": 16.929
+        },
+        {
+          "file": "./.venv/Lib/site-packages/shapely/coordinates.py",
+          "line": 21,
+          "function": "transform",
+          "calls": 1000,
+          "self_ms": 1.932,
+          "cumulative_ms": 16.105
+        },
+        {
+          "file": "./irsim/lib/behavior/group_behavior_methods.py",
+          "line": 300,
+          "function": "_collect_inputs",
+          "calls": 5,
+          "self_ms": 0.591,
+          "cumulative_ms": 13.884
+        },
+        {
+          "file": "./irsim/world/object_base.py",
+          "line": 2396,
+          "function": "rvo_state",
+          "calls": 1000,
+          "self_ms": 1.92,
+          "cumulative_ms": 12.655
+        },
+        {
+          "file": "./irsim/world/object_base.py",
+          "line": 908,
+          "function": "gen_behavior_vel",
+          "calls": 1000,
+          "self_ms": 5.315,
+          "cumulative_ms": 12.219
+        },
+        {
+          "file": "./irsim/env/env_base.py",
+          "line": 914,
+          "function": "_status_step",
+          "calls": 5,
+          "self_ms": 0.959,
+          "cumulative_ms": 11.441
+        },
+        {
+          "file": "./irsim/lib/handler/kinematics_handler.py",
+          "line": 465,
+          "function": "step",
+          "calls": 1000,
+          "self_ms": 0.408,
+          "cumulative_ms": 9.524
+        },
+        {
+          "file": "./irsim/util/util.py",
+          "line": 454,
+          "function": "rotate_translate",
+          "calls": 1000,
+          "self_ms": 5.249,
+          "cumulative_ms": 9.38
+        },
+        {
+          "file": "./irsim/util/util.py",
+          "line": 800,
+          "function": "wrapper",
+          "calls": 1000,
+          "self_ms": 1.797,
+          "cumulative_ms": 9.116
+        }
+      ]
+    },
+    {
+      "name": "sfm_group_1000",
+      "robots": 1000,
+      "objects": 1000,
+      "sensors": 0,
+      "warmup_steps": 5,
+      "measured_steps": 25,
+      "seed": 42,
+      "scene_sha256": "ae02d5a40b2c78410e5a93d00d70be03074525690c88954e0083e64e6b2cd667",
+      "step_ms": {
+        "median": 204.049,
+        "p95": 242.4031,
+        "min": 174.7691,
+        "max": 245.7563,
+        "raw": [
+          190.9876,
+          196.7643,
+          204.049,
+          212.9495,
+          227.2364,
+          235.5963,
+          232.9099,
+          208.4242,
+          185.4979,
+          174.7691,
+          209.9413,
+          191.1824,
+          197.2419,
+          215.604,
+          211.2334,
+          245.7563,
+          244.1048,
+          230.2677,
+          175.298,
+          185.9691,
+          192.7435,
+          182.3523,
+          199.7007,
+          209.267,
+          186.0284
+        ]
+      },
+      "phase_mean_ms_instrumented_separate_run": {
+        "_assign_group_action": 134.68672,
+        "build_tree": 0.88645,
+        "_objects_step": 34.59609,
+        "_objects_sensor_step": 0.25799,
+        "_status_step": 5.35134
+      },
+      "snapshot_median_ms": 11.803,
+      "snapshot_to_dict_median_ms": 24.5335,
+      "dict_to_json_median_ms": 10.8881,
+      "snapshot_json_bytes": 990284,
+      "profile_5_steps_top_by_cumulative": [
+        {
+          "file": "./irsim/util/decorator.py",
+          "line": 93,
+          "function": "wrapper",
+          "calls": 5,
+          "self_ms": 0.408,
+          "cumulative_ms": 1051.434
+        },
+        {
+          "file": "./irsim/util/decorator.py",
+          "line": 132,
+          "function": "wrapper",
+          "calls": 5,
+          "self_ms": 0.021,
+          "cumulative_ms": 1050.985
+        },
+        {
+          "file": "./irsim/env/env_base.py",
+          "line": 335,
+          "function": "step",
+          "calls": 5,
+          "self_ms": 0.239,
+          "cumulative_ms": 1050.955
+        },
+        {
+          "file": "./irsim/env/env_base.py",
+          "line": 662,
+          "function": "_assign_group_action",
+          "calls": 5,
+          "self_ms": 1.737,
+          "cumulative_ms": 729.725
+        },
+        {
+          "file": "./irsim/world/object_group.py",
+          "line": 67,
+          "function": "gen_group_vel",
+          "calls": 5,
+          "self_ms": 0.011,
+          "cumulative_ms": 726.755
+        },
+        {
+          "file": "./irsim/lib/behavior/group_behavior.py",
+          "line": 79,
+          "function": "gen_group_vel",
+          "calls": 5,
+          "self_ms": 0.041,
+          "cumulative_ms": 726.744
+        },
+        {
+          "file": "./irsim/lib/behavior/group_behavior_methods.py",
+          "line": 360,
+          "function": "__call__",
+          "calls": 5,
+          "self_ms": 2.132,
+          "cumulative_ms": 726.7
+        },
+        {
+          "file": "./irsim/lib/algorithm/social_force_model.py",
+          "line": 537,
+          "function": "cal_vel",
+          "calls": 5,
+          "self_ms": 44.512,
+          "cumulative_ms": 612.472
+        },
+        {
+          "file": "./irsim/lib/algorithm/social_force_model.py",
+          "line": 571,
+          "function": "social_force",
+          "calls": 5,
+          "self_ms": 558.964,
+          "cumulative_ms": 567.766
+        },
+        {
+          "file": "./irsim/env/env_base.py",
+          "line": 427,
+          "function": "_objects_step",
+          "calls": 5,
+          "self_ms": 3.014,
+          "cumulative_ms": 269.946
+        },
+        {
+          "file": "./irsim/world/object_base.py",
+          "line": 666,
+          "function": "step",
+          "calls": 5000,
+          "self_ms": 23.023,
+          "cumulative_ms": 262.049
+        },
+        {
+          "file": "./irsim/lib/handler/geometry_handler.py",
+          "line": 54,
+          "function": "step",
+          "calls": 5000,
+          "self_ms": 3.063,
+          "cumulative_ms": 105.408
+        },
+        {
+          "file": "./irsim/util/util.py",
+          "line": 436,
+          "function": "geometry_transform",
+          "calls": 5000,
+          "self_ms": 15.784,
+          "cumulative_ms": 102.346
+        },
+        {
+          "file": "./.venv/Lib/site-packages/shapely/decorators.py",
+          "line": 171,
+          "function": "wrapper",
+          "calls": 5000,
+          "self_ms": 3.278,
+          "cumulative_ms": 76.849
+        },
+        {
+          "file": "./.venv/Lib/site-packages/shapely/coordinates.py",
+          "line": 21,
+          "function": "transform",
+          "calls": 5000,
+          "self_ms": 8.289,
+          "cumulative_ms": 73.125
+        },
+        {
+          "file": "./irsim/lib/behavior/group_behavior_methods.py",
+          "line": 300,
+          "function": "_collect_inputs",
+          "calls": 5,
+          "self_ms": 2.72,
+          "cumulative_ms": 72.722
+        },
+        {
+          "file": "./irsim/world/object_base.py",
+          "line": 2396,
+          "function": "rvo_state",
+          "calls": 5000,
+          "self_ms": 9.441,
+          "cumulative_ms": 65.822
+        },
+        {
+          "file": "./irsim/world/object_base.py",
+          "line": 908,
+          "function": "gen_behavior_vel",
+          "calls": 5000,
+          "self_ms": 25.203,
+          "cumulative_ms": 57.428
+        },
+        {
+          "file": "./irsim/env/env_base.py",
+          "line": 914,
+          "function": "_status_step",
+          "calls": 5,
+          "self_ms": 3.862,
+          "cumulative_ms": 48.832
+        },
+        {
+          "file": "./irsim/lib/handler/kinematics_handler.py",
+          "line": 465,
+          "function": "step",
+          "calls": 5000,
+          "self_ms": 1.865,
+          "cumulative_ms": 42.985
+        },
+        {
+          "file": "./irsim/util/util.py",
+          "line": 454,
+          "function": "rotate_translate",
+          "calls": 5000,
+          "self_ms": 24.137,
+          "cumulative_ms": 42.606
+        },
+        {
+          "file": "./irsim/util/util.py",
+          "line": 800,
+          "function": "wrapper",
+          "calls": 5000,
+          "self_ms": 8.227,
+          "cumulative_ms": 41.121
+        }
+      ]
+    },
+    {
+      "name": "lidar_4_static_100",
+      "robots": 4,
+      "objects": 104,
+      "sensors": 4,
+      "warmup_steps": 5,
+      "measured_steps": 25,
+      "seed": 42,
+      "scene_sha256": "ee25c82d764c0b1f7970008d34674841dedf0b8ba7a1bd25439f9d9bbca3a0da",
+      "step_ms": {
+        "median": 15.7907,
+        "p95": 17.31072,
+        "min": 13.0475,
+        "max": 18.7453,
+        "raw": [
+          13.0475,
+          13.7749,
+          14.2141,
+          14.5521,
+          14.2833,
+          15.2072,
+          15.3115,
+          15.6371,
+          14.6876,
+          15.586,
+          15.4967,
+          16.0342,
+          15.0904,
+          15.7907,
+          16.1348,
+          16.4273,
+          16.7302,
+          16.8635,
+          16.2727,
+          16.6039,
+          16.9066,
+          17.0688,
+          16.6973,
+          17.3712,
+          18.7453
+        ]
+      },
+      "phase_mean_ms_instrumented_separate_run": {
+        "_assign_group_action": 0.01961,
+        "build_tree": 0.03693,
+        "_objects_step": 0.38404,
+        "_objects_sensor_step": 19.60727,
+        "_status_step": 0.53463
+      },
+      "snapshot_median_ms": 0.948,
+      "snapshot_to_dict_median_ms": 2.3917,
+      "dict_to_json_median_ms": 1.7438,
+      "snapshot_json_bytes": 147884,
+      "profile_5_steps_top_by_cumulative": [
+        {
+          "file": "./irsim/util/decorator.py",
+          "line": 93,
+          "function": "wrapper",
+          "calls": 5,
+          "self_ms": 0.02,
+          "cumulative_ms": 186.859
+        },
+        {
+          "file": "./irsim/util/decorator.py",
+          "line": 132,
+          "function": "wrapper",
+          "calls": 5,
+          "self_ms": 0.018,
+          "cumulative_ms": 186.793
+        },
+        {
+          "file": "./irsim/env/env_base.py",
+          "line": 335,
+          "function": "step",
+          "calls": 5,
+          "self_ms": 0.08,
+          "cumulative_ms": 186.767
+        },
+        {
+          "file": "./irsim/env/env_base.py",
+          "line": 460,
+          "function": "_objects_sensor_step",
+          "calls": 5,
+          "self_ms": 0.24,
+          "cumulative_ms": 174.596
+        },
+        {
+          "file": "./irsim/world/object_base.py",
+          "line": 768,
+          "function": "sensor_step",
+          "calls": 520,
+          "self_ms": 0.911,
+          "cumulative_ms": 174.356
+        },
+        {
+          "file": "./irsim/world/sensors/lidar2d.py",
+          "line": 185,
+          "function": "step",
+          "calls": 20,
+          "self_ms": 0.361,
+          "cumulative_ms": 173.441
+        },
+        {
+          "file": "./irsim/lib/algorithm/ray_casting_2d.py",
+          "line": 333,
+          "function": "cast_rays",
+          "calls": 20,
+          "self_ms": 2.338,
+          "cumulative_ms": 160.343
+        },
+        {
+          "file": "./irsim/lib/algorithm/ray_casting_2d.py",
+          "line": 218,
+          "function": "_gather_obstacle_edges",
+          "calls": 20,
+          "self_ms": 5.074,
+          "cumulative_ms": 125.859
+        },
+        {
+          "file": "./irsim/lib/algorithm/ray_casting_2d.py",
+          "line": 167,
+          "function": "boundary_segments",
+          "calls": 1696,
+          "self_ms": 10.08,
+          "cumulative_ms": 92.074
+        },
+        {
+          "file": "./.venv/Lib/site-packages/shapely/decorators.py",
+          "line": 171,
+          "function": "wrapper",
+          "calls": 5208,
+          "self_ms": 2.938,
+          "cumulative_ms": 80.329
+        },
+        {
+          "file": "./.venv/Lib/site-packages/shapely/decorators.py",
+          "line": 73,
+          "function": "wrapped",
+          "calls": 8769,
+          "self_ms": 10.289,
+          "cumulative_ms": 78.495
+        },
+        {
+          "file": "./.venv/Lib/site-packages/shapely/_geometry.py",
+          "line": 645,
+          "function": "get_parts",
+          "calls": 3392,
+          "self_ms": 13.098,
+          "cumulative_ms": 65.685
+        },
+        {
+          "file": "./.venv/Lib/site-packages/shapely/_geometry.py",
+          "line": 789,
+          "function": "get_num_geometries",
+          "calls": 3392,
+          "self_ms": 7.483,
+          "cumulative_ms": 38.545
+        },
+        {
+          "file": "./irsim/lib/algorithm/ray_casting_2d.py",
+          "line": 263,
+          "function": "cast_ray_segments",
+          "calls": 20,
+          "self_ms": 2.406,
+          "cumulative_ms": 31.097
+        },
+        {
+          "file": "./.venv/Lib/site-packages/numpy/_core/_internal.py",
+          "line": 667,
+          "function": "_dtype_from_pep3118",
+          "calls": 3392,
+          "self_ms": 2.187,
+          "cumulative_ms": 31.062
+        },
+        {
+          "file": "./.venv/Lib/site-packages/numpy/_core/_internal.py",
+          "line": 672,
+          "function": "__dtype_from_pep3118",
+          "calls": 3392,
+          "self_ms": 13.661,
+          "cumulative_ms": 28.555
+        },
+        {
+          "file": "./.venv/Lib/site-packages/shapely/geometry/base.py",
+          "line": 817,
+          "function": "intersects",
+          "calls": 1940,
+          "self_ms": 0.989,
+          "cumulative_ms": 24.276
+        },
+        {
+          "file": "./irsim/lib/algorithm/ray_casting_2d.py",
+          "line": 43,
+          "function": "_nonparallel_hit_distances",
+          "calls": 20,
+          "self_ms": 21.228,
+          "cumulative_ms": 21.528
+        },
+        {
+          "file": "./.venv/Lib/site-packages/shapely/predicates.py",
+          "line": 844,
+          "function": "intersects",
+          "calls": 1945,
+          "self_ms": 19.185,
+          "cumulative_ms": 19.185
+        },
+        {
+          "file": "./irsim/env/env_base.py",
+          "line": 914,
+          "function": "_status_step",
+          "calls": 5,
+          "self_ms": 0.406,
+          "cumulative_ms": 7.627
+        },
+        {
+          "file": "./irsim/world/sensors/lidar2d.py",
+          "line": 277,
+          "function": "_rebuild_scan_geometry",
+          "calls": 20,
+          "self_ms": 1.94,
+          "cumulative_ms": 6.506
+        },
+        {
+          "file": "./irsim/lib/algorithm/ray_casting_2d.py",
+          "line": 152,
+          "function": "_nearest_hits",
+          "calls": 20,
+          "self_ms": 0.372,
+          "cumulative_ms": 6.224
+        }
+      ]
+    },
+    {
+      "name": "contact_push_box",
+      "robots": 3,
+      "objects": 7,
+      "sensors": 3,
+      "warmup_steps": 5,
+      "measured_steps": 25,
+      "seed": 42,
+      "scene_sha256": "4177a9a48278c9e327aaff4b5d057965542fa40254c7e30ac6a2b7b4137a4d6f",
+      "step_ms": {
+        "median": 1.1379,
+        "p95": 1.8077399999999995,
+        "min": 0.424,
+        "max": 2.4737,
+        "raw": [
+          0.424,
+          0.7219,
+          0.7513,
+          0.6515,
+          0.455,
+          0.4603,
+          1.8434,
+          0.7436,
+          1.1379,
+          0.9118,
+          2.4737,
+          1.4584,
+          0.9967,
+          1.0452,
+          1.6517,
+          1.3242,
+          1.0727,
+          0.9911,
+          1.6651,
+          1.2964,
+          1.2084,
+          1.2472,
+          1.2584,
+          1.3918,
+          1.4527
+        ]
+      },
+      "phase_mean_ms_instrumented_separate_run": {
+        "_assign_group_action": 0.0054399999999999995,
+        "build_tree": 0.01039,
+        "_objects_step": 0.32895,
+        "_contact_step": 0.86597,
+        "_objects_sensor_step": 0.0032400000000000003,
+        "_status_step": 0.06762
+      },
+      "snapshot_median_ms": 0.0913,
+      "snapshot_to_dict_median_ms": 0.1767,
+      "dict_to_json_median_ms": 0.0942,
+      "snapshot_json_bytes": 8099,
+      "profile_5_steps_top_by_cumulative": [
+        {
+          "file": "./irsim/util/decorator.py",
+          "line": 93,
+          "function": "wrapper",
+          "calls": 5,
+          "self_ms": 0.011,
+          "cumulative_ms": 10.127
+        },
+        {
+          "file": "./irsim/util/decorator.py",
+          "line": 132,
+          "function": "wrapper",
+          "calls": 5,
+          "self_ms": 0.014,
+          "cumulative_ms": 10.1
+        },
+        {
+          "file": "./irsim/env/env_base.py",
+          "line": 335,
+          "function": "step",
+          "calls": 5,
+          "self_ms": 0.039,
+          "cumulative_ms": 10.081
+        },
+        {
+          "file": "./irsim/env/env_base.py",
+          "line": 521,
+          "function": "_contact_step",
+          "calls": 5,
+          "self_ms": 0.074,
+          "cumulative_ms": 6.808
+        },
+        {
+          "file": "./irsim/lib/algorithm/contact.py",
+          "line": 484,
+          "function": "contact_step",
+          "calls": 5,
+          "self_ms": 0.022,
+          "cumulative_ms": 6.044
+        },
+        {
+          "file": "./irsim/lib/algorithm/contact.py",
+          "line": 660,
+          "function": "sweep",
+          "calls": 10,
+          "self_ms": 0.029,
+          "cumulative_ms": 4.879
+        },
+        {
+          "file": "./irsim/lib/algorithm/contact.py",
+          "line": 704,
+          "function": "_separate",
+          "calls": 30,
+          "self_ms": 0.25,
+          "cumulative_ms": 4.846
+        },
+        {
+          "file": "./irsim/lib/algorithm/contact.py",
+          "line": 849,
+          "function": "mtv",
+          "calls": 30,
+          "self_ms": 0.053,
+          "cumulative_ms": 4.214
+        },
+        {
+          "file": "./irsim/env/env_base.py",
+          "line": 427,
+          "function": "_objects_step",
+          "calls": 5,
+          "self_ms": 0.03,
+          "cumulative_ms": 2.543
+        },
+        {
+          "file": "./irsim/world/object_base.py",
+          "line": 666,
+          "function": "step",
+          "calls": 35,
+          "self_ms": 0.183,
+          "cumulative_ms": 2.454
+        },
+        {
+          "file": "./irsim/lib/algorithm/contact.py",
+          "line": 804,
+          "function": "pieces",
+          "calls": 60,
+          "self_ms": 0.089,
+          "cumulative_ms": 2.079
+        },
+        {
+          "file": "./irsim/lib/algorithm/contact.py",
+          "line": 352,
+          "function": "piece_mtv",
+          "calls": 30,
+          "self_ms": 0.314,
+          "cumulative_ms": 2.077
+        },
+        {
+          "file": "./irsim/lib/algorithm/contact.py",
+          "line": 274,
+          "function": "object_pieces",
+          "calls": 30,
+          "self_ms": 0.067,
+          "cumulative_ms": 1.437
+        },
+        {
+          "file": "./irsim/lib/handler/geometry_handler.py",
+          "line": 54,
+          "function": "step",
+          "calls": 45,
+          "self_ms": 0.035,
+          "cumulative_ms": 1.255
+        },
+        {
+          "file": "./irsim/util/util.py",
+          "line": 436,
+          "function": "geometry_transform",
+          "calls": 45,
+          "self_ms": 0.206,
+          "cumulative_ms": 1.22
+        },
+        {
+          "file": "./.venv/Lib/site-packages/shapely/decorators.py",
+          "line": 171,
+          "function": "wrapper",
+          "calls": 110,
+          "self_ms": 0.091,
+          "cumulative_ms": 1.165
+        },
+        {
+          "file": "./irsim/lib/algorithm/contact.py",
+          "line": 882,
+          "function": "apply",
+          "calls": 5,
+          "self_ms": 0.12,
+          "cumulative_ms": 0.908
+        },
+        {
+          "file": "./.venv/Lib/site-packages/shapely/coordinates.py",
+          "line": 21,
+          "function": "transform",
+          "calls": 45,
+          "self_ms": 0.11,
+          "cumulative_ms": 0.841
+        },
+        {
+          "file": "./irsim/world/object_base.py",
+          "line": 1924,
+          "function": "centroid",
+          "calls": 45,
+          "self_ms": 0.04,
+          "cumulative_ms": 0.831
+        },
+        {
+          "file": "./irsim/world/object_base.py",
+          "line": 908,
+          "function": "gen_behavior_vel",
+          "calls": 30,
+          "self_ms": 0.125,
+          "cumulative_ms": 0.789
+        },
+        {
+          "file": "./.venv/Lib/site-packages/shapely/decorators.py",
+          "line": 73,
+          "function": "wrapped",
+          "calls": 195,
+          "self_ms": 0.312,
+          "cumulative_ms": 0.787
+        },
+        {
+          "file": "./irsim/lib/algorithm/contact.py",
+          "line": 202,
+          "function": "_polygon_piece",
+          "calls": 15,
+          "self_ms": 0.01,
+          "cumulative_ms": 0.756
+        }
+      ],
+      "final_contact_pairs": 3
+    }
+  ],
+  "sfm_social_force_memory_probe": [
+    {
+      "n": 100,
+      "social_force_ms_single_instrumented": 1.5158,
+      "tracemalloc_peak_bytes": 1936104
+    },
+    {
+      "n": 500,
+      "social_force_ms_single_instrumented": 31.3565,
+      "tracemalloc_peak_bytes": 48268936
+    },
+    {
+      "n": 1000,
+      "social_force_ms_single_instrumented": 142.0373,
+      "tracemalloc_peak_bytes": 193034936
+    }
+  ]
+}

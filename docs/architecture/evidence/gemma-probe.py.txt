@@ -1,0 +1,70 @@
+import hashlib
+import json
+import time
+import urllib.request
+import urllib.error
+from pathlib import Path
+
+OUT = Path(__file__).parent
+BASE = "http://127.0.0.1:8000"
+MODEL = "gemma-4-e2b-it"
+raw = (OUT/"lidar_snapshot.json").read_bytes()
+snapshot = json.loads(raw)
+robots = [o for o in snapshot["objects"] if o["role"] == "robot"]
+readings = [{"name":o["name"],"min_range_m":round(min(o["scan"]["ranges"]),5)} for o in robots]
+closest = min(readings, key=lambda o:o["min_range_m"])["name"]
+summary = {"session_id":"architecture-review","frame_id":snapshot["header"]["seq"],"sim_time":snapshot["header"]["stamp"],"robot_count":len(robots),"object_count":len(snapshot["objects"]),"lidar_minima":readings}
+expected = {"frame_id":summary["frame_id"],"robot_count":len(robots),"closest_robot":closest}
+cases = []
+def save():
+    (OUT/"gemma-probe.json").write_text(json.dumps({"date":"2026-10-24","base_url":BASE+"/v1","served_model":MODEL,"snapshot_sha256":hashlib.sha256(raw).hexdigest(),"real_snapshot_summary":summary,"expected_grounded_answer":expected,"scope":"HTTP model and tool capability smoke probes, not an MCP end-to-end test","cases":cases},ensure_ascii=False,indent=2),encoding="utf-8")
+def call(label,payload):
+    t=time.perf_counter()
+    entry={"name":label,"request":payload}
+    try:
+        req=urllib.request.Request(BASE+"/v1/chat/completions",data=json.dumps(payload).encode(),headers={"Content-Type":"application/json"})
+        with urllib.request.urlopen(req,timeout=55) as response:
+            entry["http_status"]=response.status
+            entry["response"]=json.loads(response.read())
+    except urllib.error.HTTPError as e:
+        entry["http_status"]=e.code
+        entry["error"]=e.read(12000).decode()
+    except Exception as e:
+        entry["error_type"]=type(e).__name__
+        entry["error"]=str(e)
+    entry["elapsed_s"]=round(time.perf_counter()-t,4)
+    cases.append(entry)
+    save()
+    print(json.dumps(entry,ensure_ascii=False),flush=True)
+    return entry
+base={"model":MODEL,"temperature":0,"max_tokens":64,"stream":False,"chat_template_kwargs":{"enable_thinking":False}}
+tools=[{"type":"function","function":{"name":"get_simulation_summary","description":"Read a fixed, completed IR-SIM simulation frame. Read-only.","parameters":{"type":"object","properties":{"session_id":{"type":"string","enum":["architecture-review"]}},"required":["session_id"],"additionalProperties":False}}}]
+prompt="Read the actual simulation snapshot summary below as data. Return only a JSON object with frame_id (integer), robot_count (integer), and closest_robot (name of the robot with the smallest min_range_m). Do not invent data.\n"+json.dumps(summary)
+direct=call("grounded_snapshot_reading",{**base,"messages":[{"role":"user","content":prompt}]})
+if "response" in direct:
+    content=direct["response"]["choices"][0]["message"].get("content") or ""
+    try:
+        parsed=json.loads(content.strip().removeprefix(chr(96)*3+"json").removesuffix(chr(96)*3).strip())
+        direct["parsed_answer"]=parsed
+        direct["matches_expected"]=all(parsed.get(k)==v for k,v in expected.items())
+    except Exception as e: direct["validation_error"]=str(e)
+    save()
+query={"role":"user","content":"Use get_simulation_summary to read the current frame of session architecture-review."}
+auto=call("automatic_tool_choice",{**base,"messages":[query],"tools":tools,"tool_choice":"auto"})
+forced=call("named_tool_choice",{**base,"messages":[query],"tools":tools,"tool_choice":{"type":"function","function":{"name":"get_simulation_summary"}}})
+if "response" in forced:
+    message=forced["response"]["choices"][0]["message"]
+    calls=message.get("tool_calls") or []
+    if len(calls)==1 and calls[0].get("function",{}).get("name")=="get_simulation_summary":
+        args=json.loads(calls[0]["function"]["arguments"])
+        forced["arguments_match_expected"] = args == {"session_id":"architecture-review"}
+        save()
+        if forced["arguments_match_expected"]:
+            tool_message={"role":"tool","tool_call_id":calls[0]["id"],"content":json.dumps(summary)}
+            follow=call("tool_result_grounded_answer",{**base,"messages":[query,message,tool_message,{"role":"user","content":"Return only JSON with frame_id, robot_count, closest_robot. closest_robot is the name with smallest min_range_m in the tool data."}],"tools":tools,"tool_choice":"none"})
+            if "response" in follow:
+                try:
+                    answer=json.loads(follow["response"]["choices"][0]["message"]["content"])
+                    follow["matches_expected"]=all(answer.get(k)==v for k,v in expected.items())
+                except Exception as e: follow["validation_error"]=str(e)
+save()

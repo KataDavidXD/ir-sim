@@ -1,0 +1,171 @@
+import cProfile
+import functools
+import hashlib
+import json
+import math
+import os
+import platform
+import pstats
+import statistics
+import sys
+import tempfile
+import time
+import tracemalloc
+from pathlib import Path
+
+import matplotlib
+import numpy as np
+import scipy
+import shapely
+import yaml
+
+import irsim
+from irsim.lib.algorithm.social_force_model import SocialForceModelBatch
+
+matplotlib.use("Agg")
+ROOT = Path.cwd()
+OUT = Path(__file__).parent
+WARMUP = 5
+STEPS = 25
+SEED = 42
+
+def make_config(n, behavior="dash", lidar=False):
+    cols = math.ceil(math.sqrt(n))
+    states = [[2.0 + (i % cols) * 1.2, 2.0 + (i // cols) * 1.2, 0.0] for i in range(n)]
+    goals = [[p[0] + 200.0, p[1], 0.0] for p in states]
+    robots = {
+        "number": n, "distribution": {"name": "manual"},
+        "kinematics": {"name": "diff"}, "shape": {"name": "circle", "radius": 0.15},
+        "state": states, "goal": goals, "vel_max": [1.0, 1.0],
+    }
+    if behavior == "group_sfm":
+        robots["group_behavior"] = {"name": "sfm", "vmax": 1.0, "neighbor_threshold": 5.0}
+    elif behavior != "prescribed":
+        robots["behavior"] = {"name": behavior}
+    cfg = {"world": {"height": 400, "width": 400, "step_time": 0.1, "sample_time": 0.1, "collision_mode": "unobstructed"}, "robot": robots}
+    if lidar:
+        robots["sensors"] = [{"type": "lidar2d", "number": 360, "range_max": 10, "noise": False}]
+        cfg["obstacle"] = {
+            "number": 100, "distribution": {"name": "manual"},
+            "shape": {"name": "rectangle", "length": 0.4, "width": 0.4},
+            "state": [[8 + i % 10, 2 + i // 10, 0] for i in range(100)],
+        }
+    return cfg
+
+def measured(name, n=0, behavior="dash", lidar=False, existing=None):
+    if existing is None:
+        cfg = make_config(n, behavior, lidar)
+        path = OUT / (name + ".yaml")
+        path.write_text(yaml.safe_dump(cfg), encoding="utf-8")
+    else:
+        path = ROOT / existing
+    env = irsim.make(str(path), headless=True, seed=SEED, log_level="ERROR")
+    explicit = [np.array([[0.3], [0.0]]) for _ in range(n)] if behavior == "prescribed" else None
+    call = (lambda: env.step(explicit, action_id=[r.id for r in env.robot_list])) if explicit else env.step
+    for _ in range(WARMUP):
+        call()
+    times = []
+    for _ in range(STEPS):
+        start = time.perf_counter_ns()
+        call()
+        times.append((time.perf_counter_ns() - start) / 1e6)
+    phase = {}
+    methods = ["_assign_group_action", "_objects_step", "_objects_sensor_step", "_status_step", "_contact_step", "build_tree"]
+    originals = {}
+    for key in methods:
+        original = getattr(env, key)
+        originals[key] = original
+        def wrapped(*args, _key=key, _original=original, **kwargs):
+            t = time.perf_counter_ns()
+            try:
+                return _original(*args, **kwargs)
+            finally:
+                phase.setdefault(_key, []).append((time.perf_counter_ns() - t) / 1e6)
+        setattr(env, key, wrapped)
+    for _ in range(10):
+        call()
+    for key, original in originals.items():
+        setattr(env, key, original)
+    profile = cProfile.Profile()
+    profile.enable()
+    for _ in range(5):
+        call()
+    profile.disable()
+    stats = pstats.Stats(profile)
+    top = []
+    for (filename, lineno, funcname), (cc, nc, tt, ct, callers) in sorted(stats.stats.items(), key=lambda kv: kv[1][3], reverse=True)[:22]:
+        top.append({"file": filename.replace(str(ROOT), "."), "line": lineno, "function": funcname, "calls": nc, "self_ms": round(tt*1000, 3), "cumulative_ms": round(ct*1000, 3)})
+    snapshot_ms = []
+    dict_ms = []
+    json_ms = []
+    for _ in range(7):
+        t = time.perf_counter_ns()
+        snap = env.get_msg()
+        t2 = time.perf_counter_ns()
+        data = snap.to_dict()
+        t3 = time.perf_counter_ns()
+        text = json.dumps(data, ensure_ascii=False, separators=(",", ":"), allow_nan=False)
+        t4 = time.perf_counter_ns()
+        snapshot_ms.append((t2-t)/1e6)
+        dict_ms.append((t3-t2)/1e6)
+        json_ms.append((t4-t3)/1e6)
+    result = {
+        "name": name, "robots": len(env.robot_list), "objects": len(env.objects),
+        "sensors": sum(len(o.sensors) for o in env.objects),
+        "warmup_steps": WARMUP, "measured_steps": STEPS, "seed": SEED,
+        "scene_sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+        "step_ms": {"median": float(np.median(times)), "p95": float(np.percentile(times,95)), "min": min(times), "max": max(times), "raw": times},
+        "phase_mean_ms_instrumented_separate_run": {k:statistics.mean(v) for k,v in phase.items()},
+        "snapshot_median_ms": statistics.median(snapshot_ms),
+        "snapshot_to_dict_median_ms": statistics.median(dict_ms),
+        "dict_to_json_median_ms": statistics.median(json_ms),
+        "snapshot_json_bytes": len(text.encode()),
+        "profile_5_steps_top_by_cumulative": top,
+    }
+    if name == "contact_push_box":
+        result["final_contact_pairs"] = len(env.contacts)
+    if name == "lidar_4_static_100":
+        # A real immutable snapshot for a later local model comprehension probe.
+        (OUT/"lidar_snapshot.json").write_text(text,encoding="utf-8")
+    env.end(0)
+    print(json.dumps({k:v for k,v in result.items() if k not in ["profile_5_steps_top_by_cumulative"]},ensure_ascii=False),flush=True)
+    return result
+
+def kernel_memory(n):
+    rand=np.random.default_rng(SEED)
+    state=np.zeros((n,8))
+    state[:,0:2]=rand.uniform(0,100,(n,2))
+    state[:,4]=0.15
+    state[:,5]=1.0
+    model=SocialForceModelBatch(states=state)
+    tracemalloc.start()
+    t=time.perf_counter_ns()
+    model.social_force()
+    elapsed=(time.perf_counter_ns()-t)/1e6
+    current,peak=tracemalloc.get_traced_memory()
+    tracemalloc.stop()
+    return {"n":n,"social_force_ms_single_instrumented":elapsed,"tracemalloc_peak_bytes":peak}
+
+results=[]
+for name,n,behavior,lidar in [
+    ("dash_100",100,"dash",False),
+    ("dash_500",500,"dash",False),
+    ("dash_1000",1000,"dash",False),
+    ("prescribed_1000",1000,"prescribed",False),
+    ("sfm_individual_200",200,"sfm",False),
+    ("sfm_group_200",200,"group_sfm",False),
+    ("sfm_group_1000",1000,"group_sfm",False),
+    ("lidar_4_static_100",4,"dash",True),
+]:
+    results.append(measured(name,n,behavior,lidar))
+results.append(measured("contact_push_box",existing="usage/26push_box_world/push_box_world.yaml"))
+evidence={
+    "baseline_commit":"39ed2f0e4ca006f5061d8808b19b46b2cfff2fca",
+    "date":"2026-10-24",
+    "environment":{"platform":platform.platform(),"python":sys.version,"numpy":np.__version__,"shapely":shapely.__version__,"scipy":scipy.__version__,"matplotlib":matplotlib.__version__,"cpu":"AMD Ryzen 9 9955HX 16-Core Processor"},
+    "method":{"warmup":WARMUP,"samples":STEPS,"phase_samples_separate":10,"profile_steps_separate":5,"snapshot_repeats":7,"headless":True,"render":False,"thread_limit":1,"notes":"Sequential single-process diagnostic. Phase/build_tree is nested; do not sum build_tree with _objects_step/_contact_step. Scenes use seed 42, no sensor noise; timing is illustrative, not ECS speedup."},
+    "scenarios":results,
+    "sfm_social_force_memory_probe":[kernel_memory(n) for n in [100,500,1000]]
+}
+(OUT/"baseline-benchmarks.json").write_text(json.dumps(evidence,ensure_ascii=False,indent=2),encoding="utf-8")
+print("SAVED",OUT/"baseline-benchmarks.json",flush=True)
