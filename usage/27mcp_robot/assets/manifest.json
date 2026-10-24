@@ -1,0 +1,42 @@
+{
+  "e2e-report.json": {
+    "bytes": 7069,
+    "sha256": "1ed638fa86075b6ff85919dcf45046b30cf0be11f677f59938f0f56776d8f4a3"
+  },
+  "gemma-thinking-window.mp4": {
+    "bytes": 997082,
+    "sha256": "03634b46e143ea46f3c5f90b99332b77716aed062ca9ef43ff78870dd2b12a02"
+  },
+  "gemma-thinking-window.png": {
+    "bytes": 384794,
+    "sha256": "f0eac132c325a5561a3f264b4ed0d32be5b1e2c8a00274a16deeff0410b5b4df"
+  },
+  "mcp-handshake.json": {
+    "bytes": 8691,
+    "sha256": "66bd9a2ecdd569ae9aaa264908dda985b168a4c964d676accb0c7233096aeb98"
+  },
+  "native-tool-calls.json": {
+    "bytes": 1479,
+    "sha256": "329c0e52f34fd73f7511b81be70b5ce30ea8a3239f815e1fdf656430e1a90360"
+  },
+  "trace.jsonl": {
+    "bytes": 16582,
+    "sha256": "a730696391b00c0a27b290952c70ae02256e3cdbaa6bafabaa2ac25a5bbaadd8"
+  },
+  "_video_metadata": {
+    "ffmpeg_version": "7.1-essentials_build-www.gyan.dev built with gcc 14.2.0 (Rev1, Built by MSYS2 project)",
+    "codec": "h264",
+    "pix_fmt": "yuv420p(progressive)",
+    "fps": 9.97,
+    "source_size": [
+      1378,
+      1196
+    ],
+    "size": [
+      1378,
+      1196
+    ],
+    "rotate": 0,
+    "duration": 180.1
+  }
+}
