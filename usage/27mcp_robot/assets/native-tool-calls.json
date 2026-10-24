@@ -1,0 +1,52 @@
+[
+  {
+    "turn": 1,
+    "model": "gemma-4-e2b-it",
+    "finish_reason": "tool_calls",
+    "tool_calls": [
+      {
+        "id": "chatcmpl-tool-a53532512121e3e0",
+        "type": "function",
+        "function": {
+          "name": "navigate_to_waypoint",
+          "arguments": "{\"max_steps\": 150, \"robot_id\": 0, \"waypoint\": \"blue\"}"
+        }
+      }
+    ],
+    "thinking_observed": true,
+    "thinking_characters": 314,
+    "reasoning_sha256": "5765fdd0a3ae8796501c7a47811d54bcf92b20ba4b710dfe4590a0e24a22c4c2",
+    "arguments_forwarded_unchanged": true,
+    "usage": {
+      "prompt_tokens": 495,
+      "total_tokens": 623,
+      "completion_tokens": 128,
+      "prompt_tokens_details": null
+    }
+  },
+  {
+    "turn": 2,
+    "model": "gemma-4-e2b-it",
+    "finish_reason": "tool_calls",
+    "tool_calls": [
+      {
+        "id": "chatcmpl-tool-8fdb3f14535f47ce",
+        "type": "function",
+        "function": {
+          "name": "navigate_to_waypoint",
+          "arguments": "{\"max_steps\": 150, \"robot_id\": 0, \"waypoint\": \"green\"}"
+        }
+      }
+    ],
+    "thinking_observed": true,
+    "thinking_characters": 197,
+    "reasoning_sha256": "d184fefe872f395cda6dd2389d34a971351d1f417b6f401653750f546d421340",
+    "arguments_forwarded_unchanged": true,
+    "usage": {
+      "prompt_tokens": 843,
+      "total_tokens": 923,
+      "completion_tokens": 80,
+      "prompt_tokens_details": null
+    }
+  }
+]

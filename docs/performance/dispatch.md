@@ -1,6 +1,6 @@
 # Dispatch optimization: measurements and validation
 
-This is the first low-risk performance step from the architecture review. It removes repeated world scans without changing state ownership, integration formulas, object order, contact solving or observation timing. It does not introduce an ECS state store or a read-side service.
+This is the first low-risk performance step from the architecture review. It removes repeated world scans without changing state ownership, integration formulas, object order, contact solving or observation timing. The dispatch change itself does not introduce an ECS state store or a read-side service. A separate [optional MCP integration](../mcp/README.md) adds a copied observation boundary and local Gemma demo; its model and rendering costs are outside these benchmarks.
 
 ## Changes
 
